@@ -6,97 +6,102 @@ import "./styles.css";
 import { Ball } from "../types";
 
 export const CanvasComponent = () => {
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-  const [balls, setBalls] = useState<Ball[]>(initialBalls);
+    const canvasRef = useRef<HTMLCanvasElement>(null);
+    const [balls, setBalls] = useState<Ball[]>(initialBalls);
 
-  const { animationId, handleCanvasMouseMove, setAnimationId } = useCanvas(
-    canvasRef,
-    balls,
-    setBalls
-  );
-  const [clickedBallId, setClickedBallId] = useState<number | null>(null);
+    const { animationId, handleCanvasMouseMove, setAnimationId } = useCanvas(
+        canvasRef,
+        balls,
+        setBalls
+    );
+    const [clickedBallId, setClickedBallId] = useState<number | null>(null);
 
-  const changeBallColorById = useCallback(
-    (id: number, color: string) => {
-      setBalls((prevBalls) =>
-        prevBalls.map((ball) => {
-          if (ball.id === id) {
-            return { ...ball, color };
-          }
-          return ball;
-        })
-      );
-    },
-    [setBalls]
-  );
+    const changeBallColorById = useCallback(
+        (id: number, color: string) => {
+            setBalls((prevBalls) =>
+                prevBalls.map((ball) => {
+                    if (ball.id === id) {
+                        return { ...ball, color };
+                    }
+                    return ball;
+                })
+            );
+        },
+        [setBalls]
+    );
 
-  const handleBallClick = useCallback(
-    (event: MouseEvent) => {
-      const canvas = canvasRef.current;
-      if (!canvas) return;
+    const handleBallClick = useCallback(
+        (event: MouseEvent) => {
+            const canvas = canvasRef.current;
+            if (!canvas) return;
 
-      const rect = canvas.getBoundingClientRect();
-      const x = event.clientX - rect.left;
-      const y = event.clientY - rect.top;
+            const rect = canvas.getBoundingClientRect();
+            const x = event.clientX - rect.left;
+            const y = event.clientY - rect.top;
 
-      balls.forEach((ball) => {
-        if (ball.isPointerInside(x, y)) {
-          setClickedBallId(ball.id);
-        }
-      });
-    },
-    [balls]
-  );
+            balls.forEach((ball) => {
+                if (ball.isPointerInside(x, y)) {
+                    setClickedBallId(ball.id);
+                }
+            });
+        },
+        [balls]
+    );
 
-  const handleCloseMenu = () => {
-    setClickedBallId(null);
-  };
-
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-
-    const ctx = canvas.getContext("2d");
-    if (!ctx) return;
-
-    if (animationId === null) {
-      const id = requestAnimationFrame(() => drawBalls(balls, ctx, canvas));
-      setAnimationId(id);
-    }
-    canvas.addEventListener("mousemove", handleCanvasMouseMove);
-    canvas.addEventListener("click", handleBallClick);
-    return () => {
-      if (animationId !== null) {
-        cancelAnimationFrame(animationId);
-        setAnimationId(null);
-      }
-
-      canvas.removeEventListener("mousemove", handleCanvasMouseMove);
-      canvas.removeEventListener("click", handleBallClick);
+    const handleCloseMenu = () => {
+        setClickedBallId(null);
     };
-  }, [
-    animationId,
-    balls,
-    handleBallClick,
-    handleCanvasMouseMove,
-    setAnimationId,
-  ]);
 
-  return (
-    <div className="canvas-container">
-      {clickedBallId && (
-        <ChangeColorMenu
-          clickedBallId={clickedBallId}
-          handleCloseMenu={handleCloseMenu}
-          changeBallColorById={changeBallColorById}
-        />
-      )}
-      <canvas
-        style={{ border: "1px solid black" }}
-        ref={canvasRef}
-        width={800}
-        height={600}
-      />
-    </div>
-  );
+    useEffect(() => {
+        const canvas = canvasRef.current;
+        if (!canvas) return;
+
+        const ctx = canvas.getContext("2d");
+        if (!ctx) return;
+
+        if (animationId === null) {
+            const id = requestAnimationFrame(() => drawBalls(balls, ctx, canvas));
+            setAnimationId(id);
+        }
+        canvas.addEventListener("mousemove", handleCanvasMouseMove);
+        canvas.addEventListener("click", handleBallClick);
+        return () => {
+            if (animationId !== null) {
+                cancelAnimationFrame(animationId);
+                setAnimationId(null);
+            }
+
+            canvas.removeEventListener("mousemove", handleCanvasMouseMove);
+            canvas.removeEventListener("click", handleBallClick);
+        };
+    }, [
+        animationId,
+        balls,
+        handleBallClick,
+        handleCanvasMouseMove,
+        setAnimationId,
+    ]);
+
+    return (
+        <div className="canvas-container">
+            <ul>
+                <li>Для запуска шара необходимо зажать левую кноку мыши и передвинуть мышь в сторону шара</li>
+                <li>Для открытия меню с выбором цвета шара следует нажать на шар</li>
+            </ul>
+
+            {clickedBallId && (
+                <ChangeColorMenu
+                    clickedBallId={clickedBallId}
+                    handleCloseMenu={handleCloseMenu}
+                    changeBallColorById={changeBallColorById}
+                />
+            )}
+            <canvas
+                style={{ border: "1px solid black" }}
+                ref={canvasRef}
+                width={800}
+                height={600}
+            />
+        </div>
+    );
 };

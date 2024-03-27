@@ -1,5 +1,12 @@
+ul {
+    list-style: decimal;
+    padding-left: 16px;
+    margin-bottom: 8px;
+}
+
 .canvas-container {
-    position: relative
+    position: relative;
+    width: 800px;
 }
 
 .menu-container {
