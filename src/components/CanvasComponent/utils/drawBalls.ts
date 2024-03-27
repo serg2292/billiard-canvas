@@ -1,18 +1,27 @@
 import { COLLISION_FACTOR, RESISTANCE } from "../constants";
 import { Ball } from "../types";
 
-export const draw = (
+export const drawBalls = (
   balls: Ball[],
   ctx: CanvasRenderingContext2D,
   canvas: HTMLCanvasElement
 ) => {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
+  let allStopped = true;
   balls.forEach((ball) => {
     ball.draw(ctx);
     ball.speed.vx *= 1 - RESISTANCE;
     ball.speed.vy *= 1 - RESISTANCE;
+
     ball.x += ball.speed.vx;
     ball.y += ball.speed.vy;
+
+    if (Math.abs(ball.speed.vx) < 0.1 && Math.abs(ball.speed.vy) < 0.1) {
+      ball.speed.vx = 0;
+      ball.speed.vy = 0;
+    } else {
+      allStopped = false;
+    }
 
     if (
       ball.y + ball.speed.vy > canvas.height - ball.radius ||
@@ -49,5 +58,7 @@ export const draw = (
     });
   });
 
-  requestAnimationFrame(() => draw(balls, ctx, canvas));
+  if (!allStopped) {
+    requestAnimationFrame(() => drawBalls(balls, ctx, canvas));
+  }
 };

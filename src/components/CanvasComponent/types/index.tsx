@@ -14,5 +14,5 @@ export type BallData = {
 
 export type Ball = BallData & {
     draw: (ctx: CanvasRenderingContext2D) => void;
-    isPointInside: (x: number, y: number) => boolean;
+    isPointerInside: (x: number, y: number) => boolean;
 };

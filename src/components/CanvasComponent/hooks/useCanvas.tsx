@@ -24,12 +24,12 @@ export const useCanvas = (canvasRef: React.RefObject<HTMLCanvasElement>, balls: 
             if (!canvas) return;
 
             const rect = canvas.getBoundingClientRect();
-            const x = event.clientX - rect.left;
-            const y = event.clientY - rect.top;
+            const mouseX = event.clientX - rect.left;
+            const mouseY = event.clientY - rect.top;
 
             balls.forEach((ball) => {
-                if (ball.isPointInside(x, y)) {
-                    changeBallSpeedById(ball.id, { vx: 5, vy: 10 });
+                if (ball.isPointerInside(mouseX, mouseY)) {
+                     changeBallSpeedById(ball.id, { vx: 5, vy: 10 });
                 }
             });
         },

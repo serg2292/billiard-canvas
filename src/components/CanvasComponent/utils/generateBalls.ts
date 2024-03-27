@@ -20,7 +20,7 @@ const ballsData: BallData[] = [
   },
 ];
 
-function drawBall(this: Ball, ctx: CanvasRenderingContext2D) {
+function draw(this: Ball, ctx: CanvasRenderingContext2D) {
   ctx.beginPath();
   ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2, true);
   ctx.closePath();
@@ -28,14 +28,14 @@ function drawBall(this: Ball, ctx: CanvasRenderingContext2D) {
   ctx.fill();
 }
 
-function pointerInside(this: Ball, x: number, y: number) {
+function isPointerInside(this: Ball, x: number, y: number) {
   const dx = x - this.x;
   const dy = y - this.y;
   return dx * dx + dy * dy < this.radius * this.radius;
 }
 
 const generateBall = (ballData: BallData): Ball => {
-    return {...ballData, draw: drawBall, isPointInside: pointerInside}
+    return {...ballData, draw, isPointerInside}
 }
 
 export const initialBalls = ballsData.map((ballData) => generateBall(ballData))

@@ -1,6 +1,6 @@
 import { useRef, useState, useEffect, useCallback } from "react";
 import { useCanvas } from "../hooks";
-import { draw, initialBalls } from "../utils";
+import { drawBalls, initialBalls } from "../utils";
 import { ChangeColorMenu } from "./changeColorMenu";
 import "./styles.css";
 import { Ball } from "../types";
@@ -40,7 +40,7 @@ export const CanvasComponent = () => {
       const y = event.clientY - rect.top;
 
       balls.forEach((ball) => {
-        if (ball.isPointInside(x, y)) {
+        if (ball.isPointerInside(x, y)) {
           setClickedBallId(ball.id);
         }
       });
@@ -60,7 +60,7 @@ export const CanvasComponent = () => {
     if (!ctx) return;
 
     if (animationId === null) {
-      const id = requestAnimationFrame(() => draw(balls, ctx, canvas));
+      const id = requestAnimationFrame(() => drawBalls(balls, ctx, canvas));
       setAnimationId(id);
     }
     canvas.addEventListener("mousemove", handleCanvasMouseMove);

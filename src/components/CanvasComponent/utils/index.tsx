@@ -1,2 +1,2 @@
 export { initialBalls } from './generateBalls'
-export { draw } from './drawBalls'
+export { drawBalls } from './drawBalls'
