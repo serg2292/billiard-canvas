@@ -1,0 +1,23 @@
+.canvas-container {
+    position: relative
+}
+
+.menu-container {
+    position: absolute;
+}
+
+.menu-content {
+    background-color: lightgoldenrodyellow;
+    border: 1px solid black;
+    width: 150px;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, 30px);
+    gap: 8px;
+    padding: 8px;
+}
+
+.color-point {
+    cursor: pointer;
+    border: 1px solid grey;
+    height: 20px;
+}

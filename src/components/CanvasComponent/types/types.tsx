@@ -1,0 +1,1 @@
+export type { Ball, BallData, Speed } from './index'
